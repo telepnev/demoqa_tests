@@ -1,41 +1,61 @@
 package tests;
 
-import com.github.javafaker.Faker;
 import helper.FormPageHelper;
 import org.junit.jupiter.api.Test;
 import pages.PracticeFormPage;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class PracticeFormTests extends TestBase {
     PracticeFormPage practiceFormPage = new PracticeFormPage();
     FormPageHelper helper = new FormPageHelper();
 
-    Faker faker = new Faker();
     @Test
     public void openSite() {
-        open("/automation-practice-form");
+        String firstName = helper.getFirstName();
+        String lastName = helper.getLastName();
+        String email = helper.getEmail();
+        String gender = helper.getRandomGender();
+        String mobile = helper.getMobilePhone();
+        String month = helper.setRandomMonth();
+        String year = helper.setRandomYear();
+        String day = helper.setRandomDay();
 
+        open("/automation-practice-form");
         executeJavaScript("$('#fixedban').remove()");
         executeJavaScript("$('footer').remove()");
 
-        practiceFormPage.firstName.setValue(helper.getFirstName());
-        practiceFormPage.lastName.setValue(helper.getLastName());
-        practiceFormPage.userEmail.setValue(helper.getEmail());
-        practiceFormPage.setRandomGender();
-        practiceFormPage.mobile.setValue(helper.getMobilePhone());
+        practiceFormPage.setFirstName(firstName);
+        practiceFormPage.setLastName(lastName);
+        practiceFormPage.setUserEmail(email);
+        practiceFormPage.setRandomGender(gender);
+        practiceFormPage.setMobilePhone(mobile);
 
         practiceFormPage.initCreateDateOfBirth.click();
-        practiceFormPage.setRandomMonth();
-        practiceFormPage.setRandomYear();
-        practiceFormPage.setRandomDay();
-        $("#subjectsInput").setValue("Arts").pressEnter();
-        $(".custom-control custom-checkbox custom-control-inline")
-                .selectOptionByValue("1");
+        practiceFormPage.setMonth(month);
+        practiceFormPage.setYear(year);
+        practiceFormPage.setDay(day);
 
+        practiceFormPage.setSubject("Arts");
+        practiceFormPage.setRandomHobbies();
+        practiceFormPage.picture.uploadFromClasspath("Locators.pdf");
+        practiceFormPage.currentAddress.setValue(helper.getCurrentAddress());
+        practiceFormPage.setState("Uttar Pradesh");
+        practiceFormPage.setCity("Agra");
+        practiceFormPage.submitButton();
 
-        $("#currentAddress").setValue("sdfsdfsdfsdfsdfsdf");
-
+        $(".table-responsive")
+                .shouldHave(text(firstName))
+                .shouldHave(text(lastName))
+                .shouldHave(text(email))
+                .shouldHave(text(gender))
+                .shouldHave(text(mobile))
+                .shouldHave(text(month))
+                .shouldHave(text(year))
+                .shouldHave(text(day))
+                .shouldHave(text("Uttar Pradesh"))
+                .shouldHave(text("Agra"));
 
     }
 

@@ -7,11 +7,16 @@ import java.util.List;
 import java.util.Random;
 
 public class FormPageHelper {
-    Faker faker = new Faker();
-    String firstName =  faker.name().firstName();
-    String lastName = faker.name().lastName();
-    String email = faker.internet().emailAddress();
-    String mobilePhone = faker.phoneNumber().subscriberNumber(9);
+    private Faker faker = new Faker();
+    private String firstName = faker.name().firstName();
+    private String lastName = faker.name().lastName();
+    private String email = faker.internet().emailAddress();
+    private String mobilePhone = faker.phoneNumber().subscriberNumber(10);
+    private String currentAddress = faker.address().fullAddress();
+
+    public String getCurrentAddress() {
+        return currentAddress;
+    }
 
     public Faker getFaker() {
         return faker;
@@ -30,42 +35,45 @@ public class FormPageHelper {
     }
 
     public String getMobilePhone() {
-        return  mobilePhone;
+        return mobilePhone;
     }
 
 
-
-     public String getRandomGender() {
+    public String getRandomGender() {
         final Random random = new Random();
         List<String> str = new ArrayList<>(List.of("Male", "Female", "Other"));
-        int min = 0;
-        int max = 2;
-        int diff = max - min;
-        int i = random.nextInt(diff + 1);
-        return str.get(i += min);
+        int i = random.nextInt(0, 2);
+        return str.get(i);
+    }
 
+    public String getRandomHobbies() {
+        final Random random = new Random();
+        List<String> str = new ArrayList<>(List.of("Sports", "Reading", "Music"));
+        int i = random.nextInt(0, 2);
+        return str.get(i);
     }
 
     public String setRandomMonth() {
         final Random random = new Random();
         List<String> str = new ArrayList<>(List.of("January", "February", "March",
                 "April", "May", "June", "July", "August", "September",
-                 "October", "November", "December"));
+                "October", "November", "December"));
         int i = random.nextInt(0, 11);
         String num = Integer.toString(i);
-        return  num;
+        return num;
     }
 
     public String setRandomYear() {
         final Random random = new Random();
         int i = random.nextInt(1900, 2023);
         String num = Integer.toString(i);
-        return  num;
+        return num;
     }
+
     public String setRandomDay() {
         final Random random = new Random();
         int i = random.nextInt(1, 28);
         String num = Integer.toString(i);
-        return  num;
+        return num;
     }
 }
